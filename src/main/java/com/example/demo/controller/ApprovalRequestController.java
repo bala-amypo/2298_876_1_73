@@ -35,4 +35,14 @@ public class ApprovalRequestController {
     // UPDATE
     @PutMapping("/{id}")
     public ApprovalRequest update(
-            @PathVariable
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest request) {
+        return service.update(id, request);
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
+}

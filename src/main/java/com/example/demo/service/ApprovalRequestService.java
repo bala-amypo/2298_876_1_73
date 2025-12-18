@@ -1,11 +1,11 @@
 package com.example.demo.service;
 
-import java.util.List;
 import com.example.demo.model.ApprovalRequest;
+import java.util.List;
 
 public interface ApprovalRequestService {
 
-    ApprovalRequest create(ApprovalRequest request);
+    ApprovalRequest save(ApprovalRequest request);
 
     List<ApprovalRequest> getAll();
 

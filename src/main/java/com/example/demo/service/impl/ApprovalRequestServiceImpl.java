@@ -1,24 +1,21 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.ApprovalRequest;
 import com.example.demo.repository.ApprovalRequestRepository;
 import com.example.demo.service.ApprovalRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 @Service
 public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
-    private final ApprovalRequestRepository repository;
-
-    public ApprovalRequestServiceImpl(ApprovalRequestRepository repository) {
-        this.repository = repository;
-    }
+    @Autowired
+    private ApprovalRequestRepository repository;
 
     @Override
-    public ApprovalRequest create(ApprovalRequest request) {
+    public ApprovalRequest save(ApprovalRequest request) {
         return repository.save(request);
     }
 
