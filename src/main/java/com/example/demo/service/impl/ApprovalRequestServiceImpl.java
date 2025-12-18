@@ -1,6 +1,5 @@
 package com.example.demo.service.impl;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -20,9 +19,6 @@ public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
     @Override
     public ApprovalRequest create(ApprovalRequest request) {
-        request.setStatus("PENDING");
-        request.setCurrentLevel(1);
-        request.setCreatedAt(LocalDateTime.now());
         return repository.save(request);
     }
 
@@ -33,16 +29,18 @@ public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
     @Override
     public ApprovalRequest getById(Long id) {
-        return repository.findById(id).orElseThrow();
+        return repository.findById(id).orElse(null);
     }
 
     @Override
     public ApprovalRequest update(Long id, ApprovalRequest request) {
-        ApprovalRequest existing = getById(id);
-        existing.setTitle(request.getTitle());
-        existing.setDescription(request.getDescription());
-        existing.setStatus(request.getStatus());
-        return repository.save(existing);
+        ApprovalRequest existing = repository.findById(id).orElse(null);
+        if (existing != null) {
+            existing.setTitle(request.getTitle());
+            existing.setDescription(request.getDescription());
+            return repository.save(existing);
+        }
+        return null;
     }
 
     @Override
