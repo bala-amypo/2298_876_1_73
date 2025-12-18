@@ -1,10 +1,41 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
+
+import java.util.HashSet;
+import java.util.Set;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.example.demo.model.User;
+import com.example.demo.repository.UserRepository;
+import com.example.demo.service.UserService;
 
-public interface UserService {
+@Service
+public class UserServiceImpl implements UserService {
 
-    User registerUser(User user, String roleName);
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    User findByUsername(String username);
+    public UserServiceImpl(UserRepository userRepository,
+                           PasswordEncoder passwordEncoder) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public User registerUser(User user, String roleName) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        Set<String> roles = new HashSet<>();
+        roles.add(roleName);
+        user.setRoles(roles);
+
+        return userRepository.save(user);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+    }
 }
