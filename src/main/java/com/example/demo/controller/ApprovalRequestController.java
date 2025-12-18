@@ -8,7 +8,7 @@ import com.example.demo.model.ApprovalRequest;
 import com.example.demo.service.ApprovalRequestService;
 
 @RestController
-@RequestMapping("/api/approval-requests")
+@RequestMapping("/api/requests")
 public class ApprovalRequestController {
 
     private final ApprovalRequestService service;

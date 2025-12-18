@@ -21,8 +21,8 @@ public class ApprovalRequestServiceImpl implements ApprovalRequestService {
     @Override
     public ApprovalRequest create(ApprovalRequest request) {
         request.setStatus("PENDING");
-        request.setCreatedAt(LocalDateTime.now());
         request.setCurrentLevel(1);
+        request.setCreatedAt(LocalDateTime.now());
         return repository.save(request);
     }
 
