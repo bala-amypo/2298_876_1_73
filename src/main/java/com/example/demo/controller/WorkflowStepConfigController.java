@@ -1,30 +1,19 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.WorkflowStepConfig;
-import com.example.demo.service.WorkflowStepConfigService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
 
-import java.util.List;
+@Entity
+public class WorkflowStepConfig {
 
-@RestController
-@RequestMapping("/api/steps")
-@Tag(name = "Workflow Steps")
-public class WorkflowStepConfigController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final WorkflowStepConfigService service;
+    private Long templateId;
+    private Integer levelNumber;
+    private String approverRole;
+    private Boolean isFinalStep;
+    private String instructions;
 
-    public WorkflowStepConfigController(WorkflowStepConfigService service) {
-        this.service = service;
-    }
-
-    @PostMapping("/")
-    public WorkflowStepConfig createStep(@RequestBody WorkflowStepConfig step) {
-        return service.createStep(step);
-    }
-
-    @GetMapping("/template/{templateId}")
-    public List<WorkflowStepConfig> getStepsByTemplate(@PathVariable Long templateId) {
-        return service.getStepsForTemplate(templateId);
-    }
+    // getters & setters
 }

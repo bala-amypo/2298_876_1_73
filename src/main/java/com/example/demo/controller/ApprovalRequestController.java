@@ -1,35 +1,31 @@
-package com.example.demo.controller;
+package com.example.demo.model;
 
-import com.example.demo.model.ApprovalRequest;
-import com.example.demo.service.ApprovalRequestService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.*;
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
-import java.util.List;
+@Entity
+public class ApprovalRequest {
 
-@RestController
-@RequestMapping("/api/requests")
-@Tag(name = "Approval Requests")
-public class ApprovalRequestController {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    private final ApprovalRequestService service;
+    private Long templateId;
+    private Long requesterId;
+    private String requestTitle;
 
-    public ApprovalRequestController(ApprovalRequestService service) {
-        this.service = service;
+    @Lob
+    private String requestPayloadJson;
+
+    private String status;
+    private Integer currentLevel;
+    private LocalDateTime createdAt;
+
+    @PrePersist
+    public void onCreate() {
+        status = "PENDING";
+        createdAt = LocalDateTime.now();
     }
 
-    @PostMapping("/")
-    public ApprovalRequest createRequest(@RequestBody ApprovalRequest request) {
-        return service.createRequest(request);
-    }
-
-    @GetMapping("/")
-    public List<ApprovalRequest> getAllRequests() {
-        return service.getAllRequests();
-    }
-
-    @GetMapping("/requester/{userId}")
-    public List<ApprovalRequest> getByRequester(@PathVariable Long userId) {
-        return service.getRequestsByRequester(userId);
-    }
+    // getters & setters
 }

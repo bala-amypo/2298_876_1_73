@@ -1,50 +1,40 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
 import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
-import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
     private final WorkflowTemplateRepository repository;
 
-    // ⚠️ EXACT constructor order
     public WorkflowTemplateServiceImpl(WorkflowTemplateRepository repository) {
         this.repository = repository;
     }
 
-    @Override
-    public WorkflowTemplate createTemplate(WorkflowTemplate template) {
-        return repository.save(template);
+    public WorkflowTemplate create(WorkflowTemplate t) {
+        return repository.save(t);
     }
 
-    @Override
-    public WorkflowTemplate getTemplateById(Long id) {
+    public WorkflowTemplate getById(Long id) {
         return repository.findById(id).orElse(null);
     }
 
-    @Override
-    public List<WorkflowTemplate> getAllTemplates() {
+    public List<WorkflowTemplate> getAll() {
         return repository.findAll();
     }
 
-    @Override
-    public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template) {
-        template.setId(id);
-        return repository.save(template);
+    public WorkflowTemplate update(Long id, WorkflowTemplate t) {
+        t.setId(id);
+        return repository.save(t);
     }
 
-    @Override
-    public WorkflowTemplate activateTemplate(Long id, boolean active) {
-        WorkflowTemplate template = repository.findById(id).orElse(null);
-        if (template != null) {
-            template.setActive(active);
-            repository.save(template);
-        }
-        return template;
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
