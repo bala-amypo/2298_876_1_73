@@ -1,46 +1,38 @@
 package com.example.demo.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
-
 import com.example.demo.model.ApprovalRequest;
 import com.example.demo.service.ApprovalRequestService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/requests")
 public class ApprovalRequestController {
 
-    private final ApprovalRequestService service;
+    @Autowired
+    private ApprovalRequestService service;
 
-    public ApprovalRequestController(ApprovalRequestService service) {
-        this.service = service;
-    }
-
+    // CREATE
     @PostMapping
     public ApprovalRequest create(@RequestBody ApprovalRequest request) {
-        return service.create(request);
+        return service.save(request);
     }
 
+    // READ ALL
     @GetMapping
     public List<ApprovalRequest> getAll() {
         return service.getAll();
     }
 
+    // READ BY ID
     @GetMapping("/{id}")
     public ApprovalRequest getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
+    // UPDATE
     @PutMapping("/{id}")
     public ApprovalRequest update(
-            @PathVariable Long id,
-            @RequestBody ApprovalRequest request) {
-        return service.update(id, request);
-    }
-
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
-        service.delete(id);
-    }
-}
+            @PathVariable
