@@ -1,31 +1,45 @@
-package com.example.demo.model;
+package com.example.demo.controller;
 
-import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.util.List;
 
-@Entity
-public class ApprovalRequest {
+import org.springframework.web.bind.annotation.*;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+import com.example.demo.model.ApprovalRequest;
+import com.example.demo.service.ApprovalRequestService;
 
-    private Long templateId;
-    private Long requesterId;
-    private String requestTitle;
+@RestController
+@RequestMapping("/api/approval-requests")
+public class ApprovalRequestController {
 
-    @Lob
-    private String requestPayloadJson;
+    private final ApprovalRequestService service;
 
-    private String status;
-    private Integer currentLevel;
-    private LocalDateTime createdAt;
-
-    @PrePersist
-    public void onCreate() {
-        status = "PENDING";
-        createdAt = LocalDateTime.now();
+    public ApprovalRequestController(ApprovalRequestService service) {
+        this.service = service;
     }
 
-    // getters & setters
+    @PostMapping
+    public ApprovalRequest create(@RequestBody ApprovalRequest request) {
+        return service.create(request);
+    }
+
+    @GetMapping
+    public List<ApprovalRequest> getAll() {
+        return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public ApprovalRequest getById(@PathVariable Long id) {
+        return service.getById(id);
+    }
+
+    @PutMapping("/{id}")
+    public ApprovalRequest update(@PathVariable Long id,
+                                  @RequestBody ApprovalRequest request) {
+        return service.update(id, request);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.delete(id);
+    }
 }
