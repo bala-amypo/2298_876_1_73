@@ -33,8 +33,9 @@ public class ApprovalRequestController {
     }
 
     @PutMapping("/{id}")
-    public ApprovalRequest update(@PathVariable Long id,
-                                  @RequestBody ApprovalRequest request) {
+    public ApprovalRequest update(
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest request) {
         return service.update(id, request);
     }
 
