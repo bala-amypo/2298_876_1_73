@@ -1,49 +1,52 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.ApprovalRequest;
-import com.example.demo.repository.*;
-import com.example.demo.service.ApprovalRequestService;
-import org.springframework.stereotype.Service;
-
 import java.time.LocalDateTime;
 import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.model.ApprovalRequest;
+import com.example.demo.repository.ApprovalRequestRepository;
+import com.example.demo.service.ApprovalRequestService;
 
 @Service
 public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
-    private final ApprovalRequestRepository requestRepository;
-    private final WorkflowStepConfigRepository stepRepository;
-    private final WorkflowTemplateRepository templateRepository;
-    private final ApprovalActionRepository actionRepository;
+    private final ApprovalRequestRepository repository;
 
-    // ⚠️ EXACT ORDER — DO NOT CHANGE
-    public ApprovalRequestServiceImpl(
-            ApprovalRequestRepository requestRepository,
-            WorkflowStepConfigRepository stepRepository,
-            WorkflowTemplateRepository templateRepository,
-            ApprovalActionRepository actionRepository) {
-
-        this.requestRepository = requestRepository;
-        this.stepRepository = stepRepository;
-        this.templateRepository = templateRepository;
-        this.actionRepository = actionRepository;
+    public ApprovalRequestServiceImpl(ApprovalRequestRepository repository) {
+        this.repository = repository;
     }
 
     @Override
-    public ApprovalRequest createRequest(ApprovalRequest request) {
+    public ApprovalRequest create(ApprovalRequest request) {
         request.setStatus("PENDING");
         request.setCreatedAt(LocalDateTime.now());
         request.setCurrentLevel(1);
-        return requestRepository.save(request);
+        return repository.save(request);
     }
 
     @Override
-    public List<ApprovalRequest> getRequestsByRequester(Long userId) {
-        return requestRepository.findByRequesterId(userId);
+    public List<ApprovalRequest> getAll() {
+        return repository.findAll();
     }
 
     @Override
-    public List<ApprovalRequest> getAllRequests() {
-        return requestRepository.findAll();
+    public ApprovalRequest getById(Long id) {
+        return repository.findById(id).orElseThrow();
+    }
+
+    @Override
+    public ApprovalRequest update(Long id, ApprovalRequest request) {
+        ApprovalRequest existing = getById(id);
+        existing.setTitle(request.getTitle());
+        existing.setDescription(request.getDescription());
+        existing.setStatus(request.getStatus());
+        return repository.save(existing);
+    }
+
+    @Override
+    public void delete(Long id) {
+        repository.deleteById(id);
     }
 }
