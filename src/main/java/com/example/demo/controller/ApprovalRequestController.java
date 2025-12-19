@@ -1,40 +1,47 @@
+package com.example.demo.controller;
+
+import java.util.List;
+
+import org.springframework.web.bind.annotation.*;
+
+import com.example.demo.model.ApprovalRequest;
+import com.example.demo.service.ApprovalRequestService;
+
 @RestController
 @RequestMapping("/api/requests")
-@CrossOrigin("*")
+@CrossOrigin
 public class ApprovalRequestController {
 
-    @Autowired
-    private ApprovalRequestService approvalRequestService;
+    private final ApprovalRequestService service;
 
-    // CREATE
+    public ApprovalRequestController(ApprovalRequestService service) {
+        this.service = service;
+    }
+
     @PostMapping
     public ApprovalRequest create(@RequestBody ApprovalRequest request) {
-        return approvalRequestService.createRequest(request);
+        return service.createRequest(request);
     }
 
-    // READ ALL ✅ (THIS FIXES Cannot GET)
     @GetMapping
     public List<ApprovalRequest> getAll() {
-        return approvalRequestService.getAllRequests();
+        return service.getAllRequests();
     }
 
-    // READ BY ID
     @GetMapping("/{id}")
     public ApprovalRequest getById(@PathVariable Long id) {
-        return approvalRequestService.getRequestById(id);
+        return service.getRequestById(id);
     }
 
-    // UPDATE
     @PutMapping("/{id}")
     public ApprovalRequest update(
             @PathVariable Long id,
             @RequestBody ApprovalRequest request) {
-        return approvalRequestService.updateRequest(id, request);
+        return service.updateRequest(id, request);
     }
 
-    // DELETE
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        approvalRequestService.deleteRequest(id);
+        service.deleteRequest(id);
     }
 }
