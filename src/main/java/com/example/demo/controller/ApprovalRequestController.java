@@ -1,18 +1,40 @@
-package com.example.demo.controller;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Collections;
-import java.util.List;
-
 @RestController
 @RequestMapping("/api/requests")
+@CrossOrigin("*")
 public class ApprovalRequestController {
 
+    @Autowired
+    private ApprovalRequestService approvalRequestService;
+
+    // CREATE
+    @PostMapping
+    public ApprovalRequest create(@RequestBody ApprovalRequest request) {
+        return approvalRequestService.createRequest(request);
+    }
+
+    // READ ALL ✅ (THIS FIXES Cannot GET)
     @GetMapping
-    public List<String> test() {
-        return Collections.singletonList("API working");
+    public List<ApprovalRequest> getAll() {
+        return approvalRequestService.getAllRequests();
+    }
+
+    // READ BY ID
+    @GetMapping("/{id}")
+    public ApprovalRequest getById(@PathVariable Long id) {
+        return approvalRequestService.getRequestById(id);
+    }
+
+    // UPDATE
+    @PutMapping("/{id}")
+    public ApprovalRequest update(
+            @PathVariable Long id,
+            @RequestBody ApprovalRequest request) {
+        return approvalRequestService.updateRequest(id, request);
+    }
+
+    // DELETE
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        approvalRequestService.deleteRequest(id);
     }
 }
