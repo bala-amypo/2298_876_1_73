@@ -1,12 +1,13 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.ApprovalRequest;
-import com.example.demo.repository.ApprovalRequestRepository;
-import com.example.demo.service.ApprovalRequestService;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import com.example.demo.model.ApprovalRequest;
+import com.example.demo.repository.ApprovalRequestRepository;
+import com.example.demo.service.ApprovalRequestService;
 
 @Service
 public class ApprovalRequestServiceImpl implements ApprovalRequestService {
@@ -15,33 +16,31 @@ public class ApprovalRequestServiceImpl implements ApprovalRequestService {
     private ApprovalRequestRepository repository;
 
     @Override
-    public ApprovalRequest save(ApprovalRequest request) {
+    public ApprovalRequest createRequest(ApprovalRequest request) {
         return repository.save(request);
     }
 
     @Override
-    public List<ApprovalRequest> getAll() {
+    public List<ApprovalRequest> getAllRequests() {
         return repository.findAll();
     }
 
     @Override
-    public ApprovalRequest getById(Long id) {
-        return repository.findById(id).orElse(null);
+    public ApprovalRequest getRequestById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Request not found"));
     }
 
     @Override
-    public ApprovalRequest update(Long id, ApprovalRequest request) {
-        ApprovalRequest existing = repository.findById(id).orElse(null);
-        if (existing != null) {
-            existing.setTitle(request.getTitle());
-            existing.setDescription(request.getDescription());
-            return repository.save(existing);
-        }
-        return null;
+    public ApprovalRequest updateRequest(Long id, ApprovalRequest request) {
+        ApprovalRequest existing = getRequestById(id);
+        existing.setTitle(request.getTitle());
+        existing.setDescription(request.getDescription());
+        return repository.save(existing);
     }
 
     @Override
-    public void delete(Long id) {
+    public void deleteRequest(Long id) {
         repository.deleteById(id);
     }
 }

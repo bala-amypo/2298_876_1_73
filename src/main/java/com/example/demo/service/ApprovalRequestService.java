@@ -1,17 +1,12 @@
-package com.example.demo.service;
-
-import com.example.demo.model.ApprovalRequest;
-import java.util.List;
-
 public interface ApprovalRequestService {
 
-    ApprovalRequest save(ApprovalRequest request);
+    ApprovalRequest createRequest(ApprovalRequest request);
 
-    List<ApprovalRequest> getAll();
+    List<ApprovalRequest> getAllRequests();
 
-    ApprovalRequest getById(Long id);
+    ApprovalRequest getRequestById(Long id);
 
-    ApprovalRequest update(Long id, ApprovalRequest request);
+    ApprovalRequest updateRequest(Long id, ApprovalRequest request);
 
-    void delete(Long id);
+    void deleteRequest(Long id);
 }
