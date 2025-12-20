@@ -12,7 +12,7 @@ public class ApprovalAction {
     private Long id;
 
     private Long requestId;
-    private int levelNumber;
+    private Integer levelNumber;
     private String action;
     private Long approverId;
 
