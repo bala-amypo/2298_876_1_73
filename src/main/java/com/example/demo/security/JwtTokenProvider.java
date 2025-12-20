@@ -1,23 +1,21 @@
 package com.example.demo.security;
 
-import com.example.demo.model.User;
+import org.springframework.stereotype.Component;
 
+@Component
 public class JwtTokenProvider {
 
-    // called with User OR String
-    public String generateToken(User user) {
-        return "dummy-token";
-    }
-
     public String generateToken(String username) {
-        return "dummy-token";
+        // dummy token
+        return "dummy-token-for-" + username;
     }
 
     public boolean validateToken(String token) {
-        return true;
+        return token != null && !token.isEmpty();
     }
 
     public Long getUserIdFromToken(String token) {
+        // dummy user id
         return 1L;
     }
 }
