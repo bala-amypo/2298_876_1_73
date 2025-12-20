@@ -2,21 +2,19 @@ package com.example.demo.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
+import jakarta.persistence.Table;
 
 @Entity
+@Table(name = "approval_actions")
 public class ApprovalAction {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer level;
-    private String action;
-    private Long approverId;
+    private Long requestId;
+    private int levelNumber;
 
-    // getters & setters
+    // ===== getters & setters =====
 
     public Long getId() {
         return id;
@@ -26,27 +24,19 @@ public class ApprovalAction {
         this.id = id;
     }
 
-    public Integer getLevel() {
-        return level;
+    public Long getRequestId() {
+        return requestId;
     }
 
-    public void setLevel(Integer level) {
-        this.level = level;
+    public void setRequestId(long requestId) {
+        this.requestId = requestId;
     }
 
-    public String getAction() {
-        return action;
+    public int getLevelNumber() {
+        return levelNumber;
     }
 
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public Long getApproverId() {
-        return approverId;
-    }
-
-    public void setApproverId(Long approverId) {
-        this.approverId = approverId;
+    public void setLevelNumber(int levelNumber) {
+        this.levelNumber = levelNumber;
     }
 }
