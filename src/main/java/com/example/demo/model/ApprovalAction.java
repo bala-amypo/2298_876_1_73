@@ -13,6 +13,8 @@ public class ApprovalAction {
 
     private Long requestId;
     private int levelNumber;
+    private String action;
+    private Long approverId;
 
     // ===== getters & setters =====
 
@@ -38,5 +40,21 @@ public class ApprovalAction {
 
     public void setLevelNumber(int levelNumber) {
         this.levelNumber = levelNumber;
+    }
+
+    public String getAction() {
+        return action;
+    }
+
+    public void setAction(String action) {
+        this.action = action;
+    }
+
+    public Long getApproverId() {
+        return approverId;
+    }
+
+    public void setApproverId(long approverId) {
+        this.approverId = approverId;
     }
 }

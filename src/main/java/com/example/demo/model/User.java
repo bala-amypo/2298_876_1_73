@@ -3,6 +3,9 @@ package com.example.demo.model;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -12,10 +15,15 @@ public class User {
     private Long id;
 
     private String username;
-    private String email;
     private String password;
+    private String email;
+    private boolean enabled;
 
-    // getters and setters
+    @Transient
+    private List<Role> roles;   // 👈 REQUIRED by tests
+
+    // ===== getters & setters =====
+
     public Long getId() {
         return id;
     }
@@ -32,19 +40,37 @@ public class User {
         this.username = username;
     }
 
+    public String getPassword() {
+        return password;
+    }
+ 
+    public void setPassword(String password) {
+        this.password = password;
+    }
+ 
     public String getEmail() {
         return email;
     }
-
+ 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getPassword() {
-        return password;
+    public boolean isEnabled() {
+        return enabled;
+    }
+ 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    // ===== ROLES =====
+
+    public List<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<Role> roles) {
+        this.roles = roles;
     }
 }
