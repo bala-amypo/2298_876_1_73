@@ -1,20 +1,21 @@
 package com.example.demo.model;
 
-import java.util.ArrayList;
-import java.util.List;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
     private Long id;
+
     private String username;
     private String email;
     private String password;
 
-    // ✅ FIX: roles must be a collection
-    private List<Role> roles = new ArrayList<>();
-
-    // getters & setters
-
+    // getters and setters
     public Long getId() {
         return id;
     }
@@ -45,14 +46,5 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    // ✅ REQUIRED by test cases
-    public List<Role> getRoles() {
-        return roles;
-    }
-
-    public void setRoles(List<Role> roles) {
-        this.roles = roles;
     }
 }
