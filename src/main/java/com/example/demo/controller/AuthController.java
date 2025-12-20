@@ -4,15 +4,20 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.service.UserService;
 import org.springframework.web.bind.annotation.*;
+import com.example.demo.security.JwtTokenProvider;
+import java.util.List;
+
 
 @RestController
 @RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
+    private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, JwtTokenProvider jwtTokenProvider) {
         this.userService = userService;
+        this.jwtTokenProvider = jwtTokenProvider;
     }
 
     @PostMapping("/register")
