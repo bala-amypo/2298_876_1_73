@@ -8,6 +8,8 @@ import com.example.demo.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.HashSet;
+
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -23,10 +25,24 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user, String roleName) {
+        // Find or create role
         Role role = roleRepository.findByName(roleName)
-                        .orElseGet(() -> roleRepository.save(new Role(null, roleName)));
-        user.getRoles().add(role);
+                .orElseGet(() -> {
+                    Role r = new Role();
+                    r.setName(roleName);
+                    return roleRepository.save(r);
+                });
+
+        // Encode password
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+
+        // Attach role
+        if (user.getRoles() == null) {
+            user.setRoles(new HashSet<>());
+        }
+        user.getRoles().add(role);
+
+        // Save user
         return userRepository.save(user);
     }
 
