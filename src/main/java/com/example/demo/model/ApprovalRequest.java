@@ -1,8 +1,8 @@
 package com.example.demo.model;
 
-import java.time.LocalDateTime;
-
 import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "approval_requests")
@@ -12,30 +12,33 @@ public class ApprovalRequest {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long templateId;
 
+    @Column(nullable = false)
     private Long requesterId;
 
     private String requestTitle;
 
     @Lob
-    @Column(columnDefinition = "TEXT")
+    @Column(nullable = false)
     private String requestPayloadJson;
 
-    private String status = "PENDING";
+    @Column(nullable = false)
+    private String status;
 
-    private Integer currentLevel = 1;
+    @Column(nullable = false)
+    private Integer currentLevel;
 
-    private LocalDateTime createdAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
-    // ===== Getters & Setters =====
+    public ApprovalRequest() {}
+
+    // getters and setters
 
     public Long getId() {
         return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getTemplateId() {
@@ -44,6 +47,10 @@ public class ApprovalRequest {
 
     public void setTemplateId(Long templateId) {
         this.templateId = templateId;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getRequesterId() {
@@ -74,16 +81,16 @@ public class ApprovalRequest {
         return status;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public Integer getCurrentLevel() {
         return currentLevel;
     }
 
     public void setCurrentLevel(Integer currentLevel) {
         this.currentLevel = currentLevel;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     public LocalDateTime getCreatedAt() {
