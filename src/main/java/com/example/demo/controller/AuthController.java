@@ -29,24 +29,24 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-public AuthResponse login(@RequestBody AuthRequest request) {
+    public AuthResponse login(@RequestBody AuthRequest request) {
 
-    User user = userService.findByUsername(request.getUsernameOrEmail());
+        User user = userService.findByUsername(request.getUsernameOrEmail());
 
-    if (user == null) {
-        throw new RuntimeException("Invalid username or email");
+        if (user == null) {
+            throw new RuntimeException("Invalid username or email");
+        }
+
+        if (!userService.checkPassword(request.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        String token = jwtTokenProvider.generateToken(user);
+
+        List<String> roles = user.getRoles().stream()
+                                .map(r -> r.getName())
+                                .toList();
+
+        return new AuthResponse(token, user.getUsername(), roles);
     }
-
-    if (!userService.checkPassword(request.getPassword(), user.getPassword())) {
-        throw new RuntimeException("Invalid password");
-    }
-
-    String token = jwtTokenProvider.generateToken(user);
-
-    List<String> roles = user.getRoles().stream()
-                             .map(r -> r.getName())
-                             .toList();
-
-    return new AuthResponse(token, user.getUsername(), roles);
-}
 }
