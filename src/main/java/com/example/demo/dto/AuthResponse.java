@@ -7,6 +7,8 @@ public class AuthResponse {
     private String usernameOrEmail;
     private List<String> roles;
 
+    public AuthResponse() {} // default constructor
+
     public AuthResponse(String token, String usernameOrEmail, List<String> roles) {
         this.token = token;
         this.usernameOrEmail = usernameOrEmail;
