@@ -1,6 +1,13 @@
+package com.example.demo.controller;
+
+import com.example.demo.model.WorkflowStepConfig;
+import com.example.demo.service.WorkflowStepConfigService;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @RestController
 @RequestMapping("/api/steps")
-@Tag(name = "Workflow Step Config Controller")
 public class WorkflowStepConfigController {
 
     private final WorkflowStepConfigService service;
@@ -11,11 +18,11 @@ public class WorkflowStepConfigController {
 
     @PostMapping
     public WorkflowStepConfig create(@RequestBody WorkflowStepConfig step) {
-        return service.create(step);
+        return service.createStep(step);
     }
 
     @GetMapping("/template/{templateId}")
     public List<WorkflowStepConfig> getByTemplate(@PathVariable Long templateId) {
-        return service.getByTemplateId(templateId);
+        return service.getStepsForTemplate(templateId);
     }
 }
