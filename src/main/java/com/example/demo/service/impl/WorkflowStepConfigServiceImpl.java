@@ -1,3 +1,12 @@
+package com.example.demo.service.impl;
+
+import com.example.demo.model.WorkflowStepConfig;
+import com.example.demo.repository.WorkflowStepConfigRepository;
+import com.example.demo.service.WorkflowStepConfigService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
 @Service
 public class WorkflowStepConfigServiceImpl implements WorkflowStepConfigService {
 
@@ -8,12 +17,12 @@ public class WorkflowStepConfigServiceImpl implements WorkflowStepConfigService 
     }
 
     @Override
-    public WorkflowStepConfig create(WorkflowStepConfig step) {
+    public WorkflowStepConfig createStep(WorkflowStepConfig step) {
         return repository.save(step);
     }
 
     @Override
-    public List<WorkflowStepConfig> getByTemplateId(Long templateId) {
-        return repository.findByWorkflowTemplateId(templateId);
+    public List<WorkflowStepConfig> getStepsForTemplate(Long templateId) {
+        return repository.findByTemplateIdOrderByLevelNumberAsc(templateId);
     }
 }

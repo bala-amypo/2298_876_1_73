@@ -1,12 +1,12 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-
 import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
@@ -17,24 +17,39 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
         this.repository = repository;
     }
 
-    public WorkflowTemplate create(WorkflowTemplate t) {
-        return repository.save(t);
+    @Override
+    public WorkflowTemplate createTemplate(WorkflowTemplate template) {
+        return repository.save(template);
     }
 
-    public WorkflowTemplate getById(Long id) {
-        return repository.findById(id).orElse(null);
+    @Override
+    public Optional<WorkflowTemplate> getTemplateById(Long id) {
+        return repository.findById(id);
     }
 
-    public List<WorkflowTemplate> getAll() {
+    @Override
+    public List<WorkflowTemplate> getAllTemplates() {
         return repository.findAll();
     }
 
-    public WorkflowTemplate update(Long id, WorkflowTemplate t) {
-        t.setId(id);
-        return repository.save(t);
+    @Override
+    public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template) {
+        WorkflowTemplate existing = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
+
+        existing.setTemplateName(template.getTemplateName());
+        existing.setDescription(template.getDescription());
+        existing.setTotalLevels(template.getTotalLevels());
+
+        return repository.save(existing);
     }
 
-    public void delete(Long id) {
-        repository.deleteById(id);
+    @Override
+    public WorkflowTemplate activateTemplate(Long id, boolean active) {
+        WorkflowTemplate template = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
+
+        template.setActive(active);
+        return repository.save(template);
     }
 }

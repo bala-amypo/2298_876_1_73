@@ -6,8 +6,6 @@ import com.example.demo.repository.ApprovalRequestRepository;
 import com.example.demo.service.ApprovalActionService;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-
 @Service
 public class ApprovalActionServiceImpl implements ApprovalActionService {
 
@@ -17,14 +15,12 @@ public class ApprovalActionServiceImpl implements ApprovalActionService {
     public ApprovalActionServiceImpl(
             ApprovalActionRepository actionRepository,
             ApprovalRequestRepository requestRepository) {
-
         this.actionRepository = actionRepository;
         this.requestRepository = requestRepository;
     }
 
     @Override
     public ApprovalAction recordAction(ApprovalAction action) {
-        action.setActionDate(LocalDateTime.now());
         return actionRepository.save(action);
     }
 }
