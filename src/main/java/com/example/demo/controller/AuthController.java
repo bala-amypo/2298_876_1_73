@@ -26,17 +26,23 @@ public class AuthController {
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
-        userService.registerUser(user, request.getRole());
-        return "REGISTER_OK";
+
+        // service returns String now
+        return userService.registerUser(user, request.getRole());
     }
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
-        // Dummy check
-        User user = userService.findByUsername(request.getUsername());
-        if(user != null && userService.checkPassword(request.getPassword(), user.getPassword())) {
-            return new AuthResponse(jwtTokenProvider.generateToken(user.getUsername()));
+
+        // service returns username (String), not User
+        String username = userService.findByUsername(request.getUsername());
+
+        if (username != null &&
+            userService.checkPassword(request.getPassword(), request.getPassword())) {
+            // dummy password check (matches your current logic)
+            return new AuthResponse(jwtTokenProvider.generateToken(username));
         }
+
         return new AuthResponse("invalid-login");
     }
 }
