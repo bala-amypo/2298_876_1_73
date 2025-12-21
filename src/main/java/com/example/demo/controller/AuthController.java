@@ -34,15 +34,14 @@ public class AuthController {
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        // service returns username (String), not User
-        String username = userService.findByUsername(request.getUsername());
+        User user = userService.findByUsername(request.getUsername());
 
-        if (username != null &&
-            userService.checkPassword(request.getPassword(), request.getPassword())) {
-            // dummy password check (matches your current logic)
-            return new AuthResponse(jwtTokenProvider.generateToken(username));
+        if (user != null &&
+            userService.checkPassword(request.getPassword(), user.getPassword())) {
+            return new AuthResponse(jwtTokenProvider.generateToken(user.getUsername()));
         }
 
         return new AuthResponse("invalid-login");
     }
+
 }

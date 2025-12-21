@@ -1,13 +1,3 @@
-package com.example.demo.service.impl;
-
-import com.example.demo.model.User;
-import com.example.demo.model.Role;
-import com.example.demo.service.UserService;
-import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.stereotype.Service;
-import java.util.HashMap;
-import java.util.Map;
-
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -19,15 +9,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public String registerUser(User user, String roleName) {
+    public User registerUser(User user, String roleName) {
         users.put(user.getUsername(), user);
-        return user.getUsername(); // String
+        return user; // MUST return User
     }
 
     @Override
-    public String findByUsername(String username) {
-        User user = users.get(username);
-        return user != null ? user.getUsername() : null;
+    public User findByUsername(String username) {
+        return users.get(username); // MUST return User
     }
 
     @Override
