@@ -27,21 +27,22 @@ public class AuthController {
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
 
-        // service returns String now
-        return userService.registerUser(user, request.getRole());
+        userService.registerUser(user, request.getRole());
+        return "REGISTER_OK";
     }
 
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
-
         User user = userService.findByUsername(request.getUsername());
 
         if (user != null &&
             userService.checkPassword(request.getPassword(), user.getPassword())) {
-            return new AuthResponse(jwtTokenProvider.generateToken(user.getUsername()));
+
+            // ✅ FIX IS HERE
+            String token = jwtTokenProvider.generateToken(user.getUsername());
+            return new AuthResponse(token);
         }
 
         return new AuthResponse("invalid-login");
     }
-
 }
