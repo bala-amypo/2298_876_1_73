@@ -19,15 +19,15 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User registerUser(User user, String roleName) {
-        // Dummy registration
+    public String registerUser(User user, String roleName) {
         users.put(user.getUsername(), user);
-        return user;
+        return user.getUsername(); // String
     }
 
     @Override
-    public User findByUsername(String username) {
-        return users.get(username);
+    public String findByUsername(String username) {
+        User user = users.get(username);
+        return user != null ? user.getUsername() : null;
     }
 
     @Override
