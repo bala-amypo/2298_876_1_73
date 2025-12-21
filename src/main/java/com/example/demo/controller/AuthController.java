@@ -46,3 +46,4 @@ public class AuthController {
         return new AuthResponse("invalid-login");
     }
 }
+
