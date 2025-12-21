@@ -20,6 +20,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User registerUser(User user, String roleName) {
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         users.put(user.getUsername(), user);
         return user;
     }
@@ -31,6 +32,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean checkPassword(String rawPassword, String encodedPassword) {
-        return rawPassword.equals(encodedPassword);
+        return passwordEncoder.matches(rawPassword, encodedPassword);
     }
 }
