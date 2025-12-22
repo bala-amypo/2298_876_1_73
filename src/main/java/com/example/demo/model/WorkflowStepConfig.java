@@ -26,7 +26,7 @@ public class WorkflowStepConfig {
 
     public WorkflowStepConfig() {}
 
-    // getters and setters
+  
 
     public Long getId() {
         return id;

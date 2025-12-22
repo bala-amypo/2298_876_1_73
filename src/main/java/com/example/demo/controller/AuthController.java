@@ -38,7 +38,6 @@ public class AuthController {
         if (user != null &&
             userService.checkPassword(request.getPassword(), user.getPassword())) {
 
-            // ✅ FIX IS HERE
             String token = jwtTokenProvider.generateToken(user.getUsername());
             return new AuthResponse(token);
         }

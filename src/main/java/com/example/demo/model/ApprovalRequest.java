@@ -35,7 +35,6 @@ public class ApprovalRequest {
 
     public ApprovalRequest() {}
 
-    // getters and setters
 
     public Long getId() {
         return id;

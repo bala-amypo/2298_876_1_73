@@ -26,7 +26,6 @@ public class AuditLogRecord {
 
     public AuditLogRecord() {}
 
-    // getters and setters
 
     public Long getId() {
         return id;

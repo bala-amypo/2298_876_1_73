@@ -26,7 +26,6 @@ public class WorkflowTemplate {
 
     public WorkflowTemplate() {}
 
-    // getters and setters
 
     public Long getId() {
         return id;

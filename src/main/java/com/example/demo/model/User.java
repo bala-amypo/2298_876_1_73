@@ -22,7 +22,7 @@ public class User {
     @Transient
     private List<Role> roles;   // 👈 REQUIRED by tests
 
-    // ===== getters & setters =====
+   
 
     public Long getId() {
         return id;
