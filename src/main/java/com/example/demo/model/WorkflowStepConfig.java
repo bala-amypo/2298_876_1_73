@@ -11,9 +11,6 @@ public class WorkflowStepConfig {
     private Long id;
 
     @Column(nullable = false)
-    private Long templateId;
-
-    @Column(nullable = false)
     private Integer levelNumber;
 
     @Column(nullable = false)
