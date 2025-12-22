@@ -12,13 +12,14 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())   // required for POST APIs
+            .csrf(csrf -> csrf.disable())
 
             .authorizeHttpRequests(auth -> auth
                 // ✅ allow auth APIs
-                .requestMatchers(
-                    "/auth/**"
-                ).permitAll()
+                .requestMatchers("/auth/**").permitAll()
+
+                // ✅ allow CRUD APIs (IMPORTANT)
+                .requestMatchers("/api/**").permitAll()
 
                 // ✅ allow swagger
                 .requestMatchers(
@@ -34,3 +35,4 @@ public class SecurityConfig {
         return http.build();
     }
 }
+
