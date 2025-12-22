@@ -16,7 +16,7 @@ public class ApprovalAction {
     private String action;
     private Long approverId;
 
-    // ===== getters & setters =====
+  
 
     public Long getId() {
         return id;
