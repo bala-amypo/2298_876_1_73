@@ -10,23 +10,23 @@ public class WorkflowStepConfig {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
-    private Integer levelNumber;
+    private Long templateId;
 
-    @Column(nullable = false)
-    private String approverRole;
+    private String stepName;
 
-    @Column(nullable = false)
-    private Boolean isFinalStep;
+    private Integer stepOrder;
 
-    private String instructions;
+    public WorkflowStepConfig() {
+    }
 
-    public WorkflowStepConfig() {}
-
-  
+    // ===== GETTERS & SETTERS =====
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public Long getTemplateId() {
@@ -37,39 +37,19 @@ public class WorkflowStepConfig {
         this.templateId = templateId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public String getStepName() {
+        return stepName;
     }
 
-    public Integer getLevelNumber() {
-        return levelNumber;
+    public void setStepName(String stepName) {
+        this.stepName = stepName;
     }
 
-    public void setLevelNumber(Integer levelNumber) {
-        this.levelNumber = levelNumber;
+    public Integer getStepOrder() {
+        return stepOrder;
     }
 
-    public String getApproverRole() {
-        return approverRole;
-    }
-
-    public void setApproverRole(String approverRole) {
-        this.approverRole = approverRole;
-    }
-
-    public Boolean getIsFinalStep() {
-        return isFinalStep;
-    }
-
-    public void setIsFinalStep(Boolean isFinalStep) {
-        this.isFinalStep = isFinalStep;
-    }
-
-    public String getInstructions() {
-        return instructions;
-    }
-
-    public void setInstructions(String instructions) {
-        this.instructions = instructions;
+    public void setStepOrder(Integer stepOrder) {
+        this.stepOrder = stepOrder;
     }
 }
