@@ -1,8 +1,13 @@
 package com.example.demo.repository;
 
-import com.example.demo.model.WorkflowTemplate;
+import com.example.demo.model.WorkflowStepConfig;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface WorkflowTemplateRepository
-        extends JpaRepository<WorkflowTemplate, Long> {
+import java.util.List;
+
+public interface WorkflowStepConfigRepository
+        extends JpaRepository<WorkflowStepConfig, Long> {
+
+    List<WorkflowStepConfig>
+        findByTemplateIdOrderByLevelNumberAsc(Long templateId);
 }
