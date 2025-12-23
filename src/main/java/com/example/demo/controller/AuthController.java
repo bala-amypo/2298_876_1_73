@@ -4,11 +4,12 @@ import com.example.demo.dto.AuthRequest;
 import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
-import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -18,36 +19,37 @@ public class AuthController {
     private UserService userService;
 
     @Autowired
-    private JwtTokenProvider jwtTokenProvider;
+    private PasswordEncoder passwordEncoder;
 
+    // Login endpoint
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
-        // Fetch user by username
+    public AuthResponse login(@RequestBody AuthRequest authRequest) {
         User user = userService.getUserByUsername(authRequest.getUsername());
-
-        // Validate password
-        if (user == null || !user.getPassword().equals(authRequest.getPassword())) {
-            return ResponseEntity.status(401).body(new AuthResponse("Invalid username or password", null));
+        if (user != null && passwordEncoder.matches(authRequest.getPassword(), user.getPassword())) {
+            // generate token logic here if needed
+            String token = "dummy-token"; // replace with actual JWT generation
+            return new AuthResponse(token, user.getUsername(), user.getRoles());
         }
-
-        // Generate JWT token
-        String token = jwtTokenProvider.generateToken(user.getUsername());
-
-        // Return token in response
-        AuthResponse response = new AuthResponse("Login successful", token);
-        return ResponseEntity.ok(response);
+        throw new RuntimeException("Invalid username or password");
     }
 
+    // Registration endpoint
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody RegisterRequest registerRequest) {
-        // Simple registration logic
+    public String registerUser(@RequestBody RegisterRequest registerRequest) {
+
         User user = new User();
         user.setUsername(registerRequest.getUsername());
-        user.setPassword(registerRequest.getPassword());
-        user.setRoles(registerRequest.getRoles()); // make sure RegisterRequest has roles field
+        user.setPassword(passwordEncoder.encode(registerRequest.getPassword()));
 
-        userService.saveUser(user); // Implement saveUser in UserService
+        // Set roles
+        if (registerRequest.getRoles() != null && !registerRequest.getRoles().isEmpty()) {
+            user.setRoles(registerRequest.getRoles()); // assuming User model has setRoles(Set<String>)
+        } else {
+            user.setRoles(Set.of("USER")); // default role
+        }
 
-        return ResponseEntity.ok("User registered successfully");
+        userService.saveUser(user);
+
+        return "User registered successfully!";
     }
 }
