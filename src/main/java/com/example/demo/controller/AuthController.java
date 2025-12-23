@@ -1,11 +1,10 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.model.User;
-import com.example.demo.dto.LoginRequest;
-import com.example.demo.dto.LoginResponse;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,20 +20,17 @@ public class AuthController {
     private JwtTokenProvider jwtTokenProvider;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
-        // Authenticate user (pseudo-code, replace with your actual logic)
-        User user = userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest authRequest) {
+        User user = userService.authenticate(authRequest.getUsername(), authRequest.getPassword());
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
 
-        // Generate token using username (fixes compilation error)
         String token = jwtTokenProvider.generateToken(user.getUsername());
 
-        // Return token in response
-        LoginResponse response = new LoginResponse();
-        response.setToken(token);
+        AuthResponse response = new AuthResponse();
         response.setUsername(user.getUsername());
+        response.setToken(token);
 
         return ResponseEntity.ok(response);
     }
