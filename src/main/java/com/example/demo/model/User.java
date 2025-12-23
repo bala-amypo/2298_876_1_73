@@ -1,9 +1,12 @@
 package com.example.demo.model;
 
+import java.util.List;
+
 public class User {
     private Long id;
     private String username;
     private String password;
+    private List<String> roles;  // Add roles
 
     public User() {}
 
@@ -11,6 +14,13 @@ public class User {
         this.id = id;
         this.username = username;
         this.password = password;
+    }
+
+    public User(Long id, String username, String password, List<String> roles) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
     }
 
     public Long getId() {
@@ -35,5 +45,13 @@ public class User {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public List<String> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(List<String> roles) {
+        this.roles = roles;
     }
 }
