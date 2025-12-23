@@ -33,6 +33,6 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
                 .orElseThrow(() -> new RuntimeException("Template not found"));
 
         template.setActive(active);
-        workflowTemplateRepository.save(template);
+        return workflowTemplateRepository.save(template);
     }
 }
