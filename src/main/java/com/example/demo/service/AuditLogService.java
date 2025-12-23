@@ -1,8 +1,21 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.model.AuditLogRecord;
+import com.example.demo.repository.AuditLogRecordRepository;
+import com.example.demo.service.AuditLogService;
+import org.springframework.stereotype.Service;
 
-public interface AuditLogService {
+@Service
+public class AuditLogServiceImpl implements AuditLogService {
 
-    AuditLogRecord save(AuditLogRecord record);
+    private final AuditLogRecordRepository repository;
+
+    public AuditLogServiceImpl(AuditLogRecordRepository repository) {
+        this.repository = repository;
+    }
+
+    @Override
+    public AuditLogRecord save(AuditLogRecord record) {
+        return repository.save(record);
+    }
 }
