@@ -1,20 +1,12 @@
 package com.example.demo.dto;
 
-import java.util.List;
+import java.util.Set;
 
 public class RegisterRequest {
 
     private String username;
     private String password;
-    private List<String> roles; // Add this
-
-    public RegisterRequest() {}
-
-    public RegisterRequest(String username, String password, List<String> roles) {
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
+    private Set<String> roles; // Add this field
 
     public String getUsername() {
         return username;
@@ -32,12 +24,11 @@ public class RegisterRequest {
         this.password = password;
     }
 
-    // Add getter for roles
-    public List<String> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }
