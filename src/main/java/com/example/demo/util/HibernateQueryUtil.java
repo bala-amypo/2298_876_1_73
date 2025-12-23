@@ -1,19 +1,22 @@
 package com.example.demo.util;
 
-import java.util.Collections;
+import jakarta.persistence.Query;
+import jakarta.persistence.EntityManager;
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 
-import com.example.demo.model.ApprovalAction;
-
+@Component
 public class HibernateQueryUtil {
 
-    // ✅ REQUIRED by test cases
-    public List<ApprovalAction> findActionsByApproverUsingCriteria(Long approverId) {
-        return Collections.emptyList();
+    private final EntityManager entityManager;
+
+    public HibernateQueryUtil(EntityManager entityManager) {
+        this.entityManager = entityManager;
     }
 
-    // ✅ overloaded version for primitive long
-    public List<ApprovalAction> findActionsByApproverUsingCriteria(long approverId) {
-        return Collections.emptyList();
+    public List<?> executeQuery(String hql) {
+        Query query = entityManager.createQuery(hql);
+        return query.getResultList();
     }
 }
