@@ -1,46 +1,62 @@
 package com.example.demo.security;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import com.example.demo.model.User;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
 
+import java.security.Key;
 import java.util.Date;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtTokenProvider {
 
-    private static final String SECRET_KEY = "review2-secret-key";
-    private static final long EXPIRATION_TIME = 86400000; // 1 day
+    private final Key key = Keys.hmacShaKeyFor(SecurityConstants.SECRET_KEY.getBytes());
 
-    // ✅ REQUIRED by tests
-    public String generateToken(String username) {
+    public String generateToken(User user) {
+
         return Jwts.builder()
-                .setSubject(username)
+                .setSubject(user.getUsername())
+                .claim("userId", user.getId())
+                .claim(
+                    "roles",
+                    user.getRoles()
+                        .stream()
+                        .map(r -> r.getName())
+                        .collect(Collectors.toList())
+                )
                 .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME))
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                .setExpiration(
+                    new Date(System.currentTimeMillis() + SecurityConstants.EXPIRATION_TIME)
+                )
+                .signWith(key, SignatureAlgorithm.HS256)
                 .compact();
-    }
-
-    // ✅ REQUIRED overload (hidden tests expect this)
-    public String generateToken(Long userId) {
-        return generateToken(String.valueOf(userId));
     }
 
     public boolean validateToken(String token) {
         try {
-            Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token);
+            getClaims(token);
             return true;
-        } catch (Exception e) {
+        } catch (Exception ex) {
             return false;
         }
     }
 
+    public Long getUserIdFromToken(String token) {
+        Claims claims = getClaims(token);
+        return claims.get("userId", Long.class);
+    }
+
     public String getUsernameFromToken(String token) {
-        return Jwts.parser()
-                .setSigningKey(SECRET_KEY)
+        return getClaims(token).getSubject();
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
-                .getBody()
-                .getSubject();
+                .getBody();
     }
 }

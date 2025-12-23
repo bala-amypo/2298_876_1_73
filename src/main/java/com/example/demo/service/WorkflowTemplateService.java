@@ -1,19 +1,53 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.WorkflowTemplate;
+import com.example.demo.repository.WorkflowTemplateRepository;
+import com.example.demo.service.WorkflowTemplateService;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 
-public interface WorkflowTemplateService {
+@Service
+public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
-    WorkflowTemplate createTemplate(WorkflowTemplate template);
+    private final WorkflowTemplateRepository repository;
 
-    Optional<WorkflowTemplate> getTemplateById(Long id);
+    public WorkflowTemplateServiceImpl(WorkflowTemplateRepository repository) {
+        this.repository = repository;
+    }
 
-    List<WorkflowTemplate> getAllTemplates();
+    @Override
+    public WorkflowTemplate createTemplate(WorkflowTemplate template) {
+        return repository.save(template);
+    }
 
-    WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template);
+    @Override
+    public Optional<WorkflowTemplate> getTemplateById(Long id) {
+        return repository.findById(id);
+    }
 
-    WorkflowTemplate activateTemplate(Long id, boolean active);
+    @Override
+    public List<WorkflowTemplate> getAllTemplates() {
+        return repository.findAll();
+    }
+
+    @Override
+    public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template) {
+        WorkflowTemplate existing = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Template not found"));
+        existing.setTemplateName(template.getTemplateName());
+        existing.setDescription(template.getDescription());
+        existing.setTotalLevels(template.getTotalLevels());
+        return repository.save(existing);
+    }
+
+    @Override
+    public WorkflowTemplate activateTemplate(Long id, boolean active) {
+        WorkflowTemplate template = repository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Template not found"));
+        template.setActive(active);
+        return repository.save(template);
+    }
 }
