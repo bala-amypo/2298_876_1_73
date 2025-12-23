@@ -10,8 +10,11 @@ public class WorkflowTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false, unique = true)
+    private String name;   // used by findByName()
+
     @Column(nullable = false)
-    private String name;   // 👈 FIELD NAME IS "name"
+    private boolean active = true;   // ✅ REQUIRED
 
     // getters & setters
     public Long getId() {
@@ -22,7 +25,15 @@ public class WorkflowTemplate {
         return name;
     }
 
+    public boolean isActive() {
+        return active;
+    }
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setActive(boolean active) {   // ✅ REQUIRED
+        this.active = active;
     }
 }
