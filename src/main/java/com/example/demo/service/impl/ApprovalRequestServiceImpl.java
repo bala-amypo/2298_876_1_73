@@ -2,7 +2,6 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.ApprovalRequest;
 import com.example.demo.repository.ApprovalRequestRepository;
-import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.ApprovalRequestService;
 import org.springframework.stereotype.Service;
 
@@ -12,13 +11,9 @@ import java.util.List;
 public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
     private final ApprovalRequestRepository approvalRequestRepository;
-    private final WorkflowTemplateRepository workflowTemplateRepository;
 
-    public ApprovalRequestServiceImpl(
-            ApprovalRequestRepository approvalRequestRepository,
-            WorkflowTemplateRepository workflowTemplateRepository) {
+    public ApprovalRequestServiceImpl(ApprovalRequestRepository approvalRequestRepository) {
         this.approvalRequestRepository = approvalRequestRepository;
-        this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
     @Override
@@ -26,9 +21,14 @@ public class ApprovalRequestServiceImpl implements ApprovalRequestService {
         return approvalRequestRepository.save(request);
     }
 
-    // ✅ THIS METHOD WAS MISSING
     @Override
     public List<ApprovalRequest> getAllRequests() {
         return approvalRequestRepository.findAll();
+    }
+
+    // ✅ THIS METHOD WAS MISSING
+    @Override
+    public List<ApprovalRequest> getRequestsByRequester(Long requesterId) {
+        return approvalRequestRepository.findByRequesterId(requesterId);
     }
 }

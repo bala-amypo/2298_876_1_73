@@ -18,13 +18,21 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
     @Override
     public WorkflowTemplate createTemplate(WorkflowTemplate template) {
-        // ❌ DO NOT set ID manually
-        // ❌ DO NOT call setActive if field doesn't exist
         return workflowTemplateRepository.save(template);
     }
 
     @Override
     public List<WorkflowTemplate> getAllTemplates() {
         return workflowTemplateRepository.findAll();
+    }
+
+    // ✅ THIS METHOD WAS MISSING
+    @Override
+    public void activateTemplate(Long templateId, boolean active) {
+        WorkflowTemplate template = workflowTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new RuntimeException("Template not found"));
+
+        template.setActive(active);
+        workflowTemplateRepository.save(template);
     }
 }
