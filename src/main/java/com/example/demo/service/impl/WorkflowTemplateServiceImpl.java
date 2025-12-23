@@ -1,5 +1,6 @@
 package com.example.demo.service.impl;
 
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.WorkflowTemplate;
 import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
@@ -35,20 +36,17 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
     @Override
     public WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template) {
         WorkflowTemplate existing = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Template not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Template not found"));
         existing.setTemplateName(template.getTemplateName());
         existing.setDescription(template.getDescription());
         existing.setTotalLevels(template.getTotalLevels());
-
         return repository.save(existing);
     }
 
     @Override
     public WorkflowTemplate activateTemplate(Long id, boolean active) {
         WorkflowTemplate template = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Template not found"));
-
+                .orElseThrow(() -> new ResourceNotFoundException("Template not found"));
         template.setActive(active);
         return repository.save(template);
     }

@@ -10,13 +10,12 @@ import org.springframework.stereotype.Service;
 public class ApprovalActionServiceImpl implements ApprovalActionService {
 
     private final ApprovalActionRepository actionRepository;
-    private final ApprovalRequestRepository requestRepository;
 
     public ApprovalActionServiceImpl(
             ApprovalActionRepository actionRepository,
-            ApprovalRequestRepository requestRepository) {
+            ApprovalRequestRepository requestRepository
+    ) {
         this.actionRepository = actionRepository;
-        this.requestRepository = requestRepository;
     }
 
     @Override
