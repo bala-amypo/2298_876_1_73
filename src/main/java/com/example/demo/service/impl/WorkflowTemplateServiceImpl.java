@@ -5,8 +5,6 @@ import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-
 @Service
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
@@ -16,23 +14,27 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
         this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
-    @Override
-    public WorkflowTemplate createTemplate(WorkflowTemplate template) {
-        return workflowTemplateRepository.save(template);
-    }
-
-    @Override
-    public List<WorkflowTemplate> getAllTemplates() {
-        return workflowTemplateRepository.findAll();
-    }
-
-    // ✅ THIS METHOD WAS MISSING
+    // ✅ FIX 1: activateTemplate
     @Override
     public WorkflowTemplate activateTemplate(Long templateId, boolean active) {
+
         WorkflowTemplate template = workflowTemplateRepository.findById(templateId)
-                .orElseThrow(() -> new RuntimeException("Template not found"));
+                .orElseThrow(() -> new RuntimeException("Workflow template not found"));
 
         template.setActive(active);
         return workflowTemplateRepository.save(template);
+    }
+
+    // ✅ FIX 2: updateTemplate (THIS WAS MISSING)
+    @Override
+    public WorkflowTemplate updateTemplate(Long templateId, WorkflowTemplate updatedTemplate) {
+
+        WorkflowTemplate existing = workflowTemplateRepository.findById(templateId)
+                .orElseThrow(() -> new RuntimeException("Workflow template not found"));
+
+        existing.setName(updatedTemplate.getName());
+        existing.setActive(updatedTemplate.isActive());
+
+        return workflowTemplateRepository.save(existing);
     }
 }
