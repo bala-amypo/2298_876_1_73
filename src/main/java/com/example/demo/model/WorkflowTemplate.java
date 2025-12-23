@@ -1,28 +1,30 @@
 package com.example.demo.model;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 
 @Entity
-@Table(name = "workflow_templates")
 public class WorkflowTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String templateName;
 
     private String description;
 
+    private Integer totalLevels;
+
+    private boolean active;
+
+    // ✅ REQUIRED no-arg constructor
     public WorkflowTemplate() {
     }
 
-    public WorkflowTemplate(String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    // ===== GETTERS & SETTERS =====
+    // ---------- Getters & Setters ----------
 
     public Long getId() {
         return id;
@@ -32,12 +34,12 @@ public class WorkflowTemplate {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getTemplateName() {
+        return templateName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
     }
 
     public String getDescription() {
@@ -46,5 +48,21 @@ public class WorkflowTemplate {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getTotalLevels() {
+        return totalLevels;
+    }
+
+    public void setTotalLevels(Integer totalLevels) {
+        this.totalLevels = totalLevels;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
 }
