@@ -1,75 +1,29 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "approval_actions")
+@Table(name = "approval_action")
 public class ApprovalAction {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long requestId;
+    private int level;       // required for findByLevelAndAction
+    private String action;   // required for findByLevelAndAction
+    private String description;
 
-    private Long approverId;
+    // Getters and Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    private Integer levelNumber;
+    public int getLevel() { return level; }
+    public void setLevel(int level) { this.level = level; }
 
-    private String action;
+    public String getAction() { return action; }
+    public void setAction(String action) { this.action = action; }
 
-    private String comments;
-
-    private LocalDateTime actionDate = LocalDateTime.now();
-
-    public ApprovalAction() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public Long getRequestId() {
-        return requestId;
-    }
-
-    public void setRequestId(Long requestId) {
-        this.requestId = requestId;
-    }
-
-    public Long getApproverId() {
-        return approverId;
-    }
-
-    public void setApproverId(Long approverId) {
-        this.approverId = approverId;
-    }
-
-    public Integer getLevelNumber() {
-        return levelNumber;
-    }
-
-    public void setLevelNumber(Integer levelNumber) {
-        this.levelNumber = levelNumber;
-    }
-
-    public String getAction() {
-        return action;
-    }
-
-    public void setAction(String action) {
-        this.action = action;
-    }
-
-    public String getComments() {
-        return comments;
-    }
-
-    public void setComments(String comments) {
-        this.comments = comments;
-    }
-
-    public LocalDateTime getActionDate() {
-        return actionDate;
-    }
+    public String getDescription() { return description; }
+    public void setDescription(String description) { this.description = description; }
 }
