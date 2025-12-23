@@ -25,13 +25,8 @@ public class AuthController {
         if (user == null) {
             return ResponseEntity.status(401).build();
         }
-
-        String token = jwtTokenProvider.generateToken(user.getUsername());
-
-        AuthResponse response = new AuthResponse();
-        response.setUsername(user.getUsername());
-        response.setToken(token);
-
-        return ResponseEntity.ok(response);
+        String token = jwtTokenProvider.generateToken(user);
+        AuthResponse authResponse = new AuthResponse(user.getUsername(), token);
+        return ResponseEntity.ok(authResponse);
     }
 }

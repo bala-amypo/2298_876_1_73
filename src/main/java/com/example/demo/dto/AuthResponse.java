@@ -1,7 +1,6 @@
 package com.example.demo.dto;
 
 public class AuthResponse {
-
     private String username;
     private String token;
 
