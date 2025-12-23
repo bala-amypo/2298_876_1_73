@@ -1,28 +1,23 @@
 package com.example.demo.model;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.util.Set; // <--- fixed import
 
+@Entity
+@Table(name = "users")
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String username;
     private String password;
-    private Set<String> roles;  // Add roles
 
-    public User() {}
+    @ElementCollection(fetch = FetchType.EAGER)
+    private Set<String> roles; // <--- using Set
 
-    public User(Long id, String username, String password) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-    }
-
-    public User(Long id, String username, String password, List<String> roles) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.roles = roles;
-    }
-
+    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -47,11 +42,11 @@ public class User {
         this.password = password;
     }
 
-    public List<String> getRoles() {
+    public Set<String> getRoles() {
         return roles;
     }
 
-    public void setRoles(List<String> roles) {
+    public void setRoles(Set<String> roles) {
         this.roles = roles;
     }
 }
