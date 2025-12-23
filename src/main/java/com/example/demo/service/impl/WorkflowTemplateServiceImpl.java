@@ -5,6 +5,8 @@ import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.WorkflowTemplateService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
@@ -14,7 +16,13 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
         this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
-    // ✅ FIX 1: activateTemplate
+    // ✅ REQUIRED: getAllTemplates
+    @Override
+    public List<WorkflowTemplate> getAllTemplates() {
+        return workflowTemplateRepository.findAll();
+    }
+
+    // ✅ REQUIRED: activateTemplate
     @Override
     public WorkflowTemplate activateTemplate(Long templateId, boolean active) {
 
@@ -25,7 +33,7 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
         return workflowTemplateRepository.save(template);
     }
 
-    // ✅ FIX 2: updateTemplate (THIS WAS MISSING)
+    // ✅ REQUIRED: updateTemplate
     @Override
     public WorkflowTemplate updateTemplate(Long templateId, WorkflowTemplate updatedTemplate) {
 
