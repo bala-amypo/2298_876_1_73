@@ -28,7 +28,7 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
 
     // ✅ THIS METHOD WAS MISSING
     @Override
-    public void activateTemplate(Long templateId, boolean active) {
+    public WorkflowTemplate activateTemplate(Long templateId, boolean active) {
         WorkflowTemplate template = workflowTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new RuntimeException("Template not found"));
 
