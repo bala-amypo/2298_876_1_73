@@ -1,19 +1,9 @@
-package com.example.demo.service;
+package com.example.demo.repository;
 
 import com.example.demo.model.WorkflowTemplate;
-
-import java.util.List;
+import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 
-public interface WorkflowTemplateService {
-
-    WorkflowTemplate createTemplate(WorkflowTemplate template);
-
-    Optional<WorkflowTemplate> getTemplateById(Long id);
-
-    List<WorkflowTemplate> getAllTemplates();
-
-    WorkflowTemplate updateTemplate(Long id, WorkflowTemplate template);
-
-    WorkflowTemplate activateTemplate(Long id, boolean active);
+public interface WorkflowTemplateRepository extends JpaRepository<WorkflowTemplate, Long> {
+    Optional<WorkflowTemplate> findByTemplateName(String templateName);
 }
