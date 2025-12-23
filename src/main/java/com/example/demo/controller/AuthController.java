@@ -1,73 +1,41 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
-import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.LoginResponse;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
-
 @RestController
-@RequestMapping("/auth")
-@Tag(name = "Authentication")
+@RequestMapping("/api/auth")
 public class AuthController {
 
-    private final UserService userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtTokenProvider jwtTokenProvider;
+    @Autowired
+    private UserService userService;
 
-    public AuthController(
-            UserService userService,
-            AuthenticationManager authenticationManager,
-            JwtTokenProvider jwtTokenProvider
-    ) {
-        this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtTokenProvider = jwtTokenProvider;
-    }
+    @Autowired
+    private JwtTokenProvider jwtTokenProvider;
 
-    @Operation(summary = "Register user")
-    @PostMapping("/register")
-    public User register(@RequestBody RegisterRequest request) {
-
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setEmail(request.getEmail());
-        user.setPassword(request.getPassword());
-
-        return userService.registerUser(user, request.getRole());
-    }
-
-    @Operation(summary = "Login user")
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AuthRequest request) {
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        // Authenticate user (pseudo-code, replace with your actual logic)
+        User user = userService.authenticate(loginRequest.getUsername(), loginRequest.getPassword());
+        if (user == null) {
+            return ResponseEntity.status(401).build();
+        }
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getUsernameOrEmail(),
-                        request.getPassword()
-                )
-        );
+        // Generate token using username (fixes compilation error)
+        String token = jwtTokenProvider.generateToken(user.getUsername());
 
-        User user = userService.findByUsername(authentication.getName());
+        // Return token in response
+        LoginResponse response = new LoginResponse();
+        response.setToken(token);
+        response.setUsername(user.getUsername());
 
-        String token = jwtTokenProvider.generateToken(user);
-
-        return new AuthResponse(
-                token,
-                user.getUsername(),
-                user.getRoles()
-                        .stream()
-                        .map(r -> r.getName())
-                        .collect(Collectors.toSet())
-        );
+        return ResponseEntity.ok(response);
     }
 }
