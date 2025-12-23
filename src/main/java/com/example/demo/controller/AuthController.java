@@ -6,51 +6,68 @@ import com.example.demo.dto.RegisterRequest;
 import com.example.demo.model.User;
 import com.example.demo.security.JwtTokenProvider;
 import com.example.demo.service.UserService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/auth")
+@Tag(name = "Authentication")
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
     private final JwtTokenProvider jwtTokenProvider;
 
-    public AuthController(UserService userService,
-                          JwtTokenProvider jwtTokenProvider) {
+    public AuthController(
+            UserService userService,
+            AuthenticationManager authenticationManager,
+            JwtTokenProvider jwtTokenProvider
+    ) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
         this.jwtTokenProvider = jwtTokenProvider;
     }
 
-    // ================= REGISTER =================
+    @Operation(summary = "Register user")
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest request) {
+    public User register(@RequestBody RegisterRequest request) {
 
         User user = new User();
         user.setUsername(request.getUsername());
         user.setEmail(request.getEmail());
         user.setPassword(request.getPassword());
 
-        userService.registerUser(user, request.getRole());
-
-        return "REGISTER_OK";
+        return userService.registerUser(user, request.getRole());
     }
 
-    // ================= LOGIN =================
+    @Operation(summary = "Login user")
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AuthRequest request) {
 
-        User user = userService.findByUsername(request.getUsername());
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getUsernameOrEmail(),
+                        request.getPassword()
+                )
+        );
 
-        if (user != null &&
-                userService.checkPassword(
-                        request.getPassword(),
-                        user.getPassword())) {
+        User user = userService.findByUsername(authentication.getName());
 
-            // ✅ Hidden tests expect JWT token here
-            String token = jwtTokenProvider.generateToken(user.getUsername());
-            return new AuthResponse(token);
-        }
+        String token = jwtTokenProvider.generateToken(user);
 
-        return new AuthResponse("INVALID_LOGIN");
+        return new AuthResponse(
+                token,
+                user.getUsername(),
+                user.getRoles()
+                        .stream()
+                        .map(r -> r.getName())
+                        .collect(Collectors.toSet())
+        );
     }
 }
