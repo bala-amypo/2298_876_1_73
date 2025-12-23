@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface WorkflowTemplateRepository extends JpaRepository<WorkflowTemplate, Long> {
 
-    Optional<WorkflowTemplate> findByTemplateName(String templateName); // ✅ MATCHES FIELD
+    Optional<WorkflowTemplate> findByTemplateName(String templateName); // matches entity
 }
