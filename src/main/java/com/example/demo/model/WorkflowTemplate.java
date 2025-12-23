@@ -10,30 +10,56 @@ public class WorkflowTemplate {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    // Tests expect this
     @Column(nullable = false, unique = true)
-    private String name;   // used by findByName()
+    private String templateName;
 
+    // Tests expect this
     @Column(nullable = false)
-    private boolean active = true;   // ✅ REQUIRED
+    private int totalLevels;
 
-    // getters & setters
+    // Optional description field
+    @Column(length = 500)
+    private String description;
+
+    // Active field
+    @Column(nullable = false)
+    private boolean active = true;
+
+    // Getters & Setters
     public Long getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public String getTemplateName() {
+        return templateName;
     }
 
-    public boolean isActive() {
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
+
+    public int getTotalLevels() {
+        return totalLevels;
+    }
+
+    public void setTotalLevels(int totalLevels) {
+        this.totalLevels = totalLevels;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public boolean getActive() {  // test expects getActive(), not isActive()
         return active;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public void setActive(boolean active) {   // ✅ REQUIRED
+    public void setActive(boolean active) {
         this.active = active;
     }
 }
