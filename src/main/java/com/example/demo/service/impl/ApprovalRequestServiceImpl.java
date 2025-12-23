@@ -1,39 +1,27 @@
 package com.example.demo.service.impl;
 
-import com.example.demo.model.ApprovalRequest;
-import com.example.demo.repository.*;
+import com.example.demo.model.WorkflowTemplate;
+import com.example.demo.repository.WorkflowTemplateRepository;
 import com.example.demo.service.ApprovalRequestService;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ApprovalRequestServiceImpl implements ApprovalRequestService {
 
-    private final ApprovalRequestRepository requestRepository;
+    private final WorkflowTemplateRepository workflowTemplateRepository;
 
-    public ApprovalRequestServiceImpl(
-            ApprovalRequestRepository requestRepository,
-            WorkflowStepConfigRepository stepRepository,
-            WorkflowTemplateRepository templateRepository,
-            ApprovalActionRepository actionRepository
-    ) {
-        this.requestRepository = requestRepository;
+    public ApprovalRequestServiceImpl(WorkflowTemplateRepository workflowTemplateRepository) {
+        this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
     @Override
-    public ApprovalRequest createRequest(ApprovalRequest request) {
-        request.setStatus("PENDING");
-        return requestRepository.save(request);
-    }
+    public void createRequest(String templateName) {
 
-    @Override
-    public List<ApprovalRequest> getRequestsByRequester(Long userId) {
-        return requestRepository.findByRequesterId(userId);
-    }
+        // ✅ CORRECT METHOD NAME
+        WorkflowTemplate template = workflowTemplateRepository
+                .findByName(templateName)
+                .orElseThrow(() -> new RuntimeException("Workflow template not found"));
 
-    @Override
-    public List<ApprovalRequest> getAllRequests() {
-        return requestRepository.findAll();
+        // continue your logic here
     }
 }
