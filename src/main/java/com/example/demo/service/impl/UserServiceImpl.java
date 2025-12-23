@@ -13,7 +13,9 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     @Override
-    public User getUserByUsername(String username) {
-        return userRepository.findByUsername(username); // make sure this repository method exists
+    public User saveUser(User user) {
+        return userRepository.save(user);
     }
+
+    // Add other methods already in your class
 }
