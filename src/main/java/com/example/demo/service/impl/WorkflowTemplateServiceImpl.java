@@ -6,7 +6,6 @@ import com.example.demo.service.WorkflowTemplateService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
@@ -17,40 +16,45 @@ public class WorkflowTemplateServiceImpl implements WorkflowTemplateService {
         this.workflowTemplateRepository = workflowTemplateRepository;
     }
 
-    // ✅ Get all templates
+    // ✅ get all templates
     @Override
     public List<WorkflowTemplate> getAllTemplates() {
         return workflowTemplateRepository.findAll();
     }
 
-    // ✅ Get template by ID (returns Optional)
-    @Override
-    public Optional<WorkflowTemplate> getTemplateById(Long id) {
-        return workflowTemplateRepository.findById(id);
-    }
-
-    // ✅ Activate/Deactivate template
+    // ✅ activate or deactivate template
     @Override
     public WorkflowTemplate activateTemplate(Long templateId, boolean active) {
         WorkflowTemplate template = workflowTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new RuntimeException("Workflow template not found"));
-        template.setActive(active);
+
+        template.setActive(active);  // matches model's setActive()
         return workflowTemplateRepository.save(template);
     }
 
-    // ✅ Update template
+    // ✅ update template
     @Override
     public WorkflowTemplate updateTemplate(Long templateId, WorkflowTemplate updatedTemplate) {
         WorkflowTemplate existing = workflowTemplateRepository.findById(templateId)
                 .orElseThrow(() -> new RuntimeException("Workflow template not found"));
-        existing.setName(updatedTemplate.getName());
-        existing.setActive(updatedTemplate.isActive());
+
+        existing.setTemplateName(updatedTemplate.getTemplateName()); // updated method name
+        existing.setActive(updatedTemplate.getActive());              // updated method name
+        existing.setTotalLevels(updatedTemplate.getTotalLevels());
+        existing.setDescription(updatedTemplate.getDescription());
+
         return workflowTemplateRepository.save(existing);
     }
 
-    // ✅ CREATE template (THIS WAS MISSING)
+    // ✅ create template
     @Override
     public WorkflowTemplate createTemplate(WorkflowTemplate template) {
         return workflowTemplateRepository.save(template);
+    }
+
+    // ✅ get template by ID
+    @Override
+    public java.util.Optional<WorkflowTemplate> getTemplateById(Long templateId) {
+        return workflowTemplateRepository.findById(templateId);
     }
 }
