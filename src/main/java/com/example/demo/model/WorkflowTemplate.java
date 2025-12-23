@@ -3,22 +3,26 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "workflow_template")
 public class WorkflowTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
-    private boolean active;
+    @Column(nullable = false)
+    private String name;   // 👈 FIELD NAME IS "name"
 
-    // Getter and Setter
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    // getters & setters
+    public Long getId() {
+        return id;
+    }
 
-    public String getName() { return name; }
-    public void setName(String name) { this.name = name; }
+    public String getName() {
+        return name;
+    }
 
-    public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
+    public void setName(String name) {
+        this.name = name;
+    }
 }
