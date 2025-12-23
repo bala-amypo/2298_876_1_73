@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 public class JwtTokenProvider {
 
     private final Key key = Keys.hmacShaKeyFor("demo-secret-key-demo-secret-key".getBytes());
-    private final long expiration = 86400000; // 1 day in ms
+    private final long expiration = 86400000; // 1 day
 
     public String generateToken(User user) {
         return Jwts.builder()
