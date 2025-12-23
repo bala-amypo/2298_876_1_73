@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -12,20 +11,16 @@ public class AuditLogRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     private Long requestId;
 
-    @Column(nullable = false)
     private String eventType;
 
     @Lob
     private String details;
 
-    @Column(nullable = false)
-    private LocalDateTime loggedAt;
+    private LocalDateTime loggedAt = LocalDateTime.now();
 
     public AuditLogRecord() {}
-
 
     public Long getId() {
         return id;
@@ -37,10 +32,6 @@ public class AuditLogRecord {
 
     public void setRequestId(Long requestId) {
         this.requestId = requestId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getEventType() {
@@ -61,9 +52,5 @@ public class AuditLogRecord {
 
     public LocalDateTime getLoggedAt() {
         return loggedAt;
-    }
-
-    public void setLoggedAt(LocalDateTime loggedAt) {
-        this.loggedAt = loggedAt;
     }
 }

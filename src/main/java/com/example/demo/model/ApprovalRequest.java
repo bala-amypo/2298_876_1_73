@@ -1,7 +1,6 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -21,20 +20,18 @@ public class ApprovalRequest {
     private String requestTitle;
 
     @Lob
-    @Column(nullable = false)
+    @Column(columnDefinition = "LONGTEXT")
     private String requestPayloadJson;
 
     @Column(nullable = false)
-    private String status;
+    private String status = "PENDING";
 
-    @Column(nullable = false)
     private Integer currentLevel;
 
     @Column(nullable = false)
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt = LocalDateTime.now();
 
     public ApprovalRequest() {}
-
 
     public Long getId() {
         return id;
@@ -46,10 +43,6 @@ public class ApprovalRequest {
 
     public void setTemplateId(Long templateId) {
         this.templateId = templateId;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public Long getRequesterId() {
@@ -80,6 +73,10 @@ public class ApprovalRequest {
         return status;
     }
 
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public Integer getCurrentLevel() {
         return currentLevel;
     }
@@ -88,15 +85,7 @@ public class ApprovalRequest {
         this.currentLevel = currentLevel;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
     public LocalDateTime getCreatedAt() {
         return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
     }
 }
