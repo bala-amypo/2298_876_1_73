@@ -37,7 +37,11 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
-        userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail());
+        com.example.demo.model.User user = new com.example.demo.model.User();
+        user.setUsername(request.getUsername());
+        user.setPassword(request.getPassword());
+        user.setEmail(request.getEmail());
+        userService.registerUser(user, request.getRole());
         return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 }
