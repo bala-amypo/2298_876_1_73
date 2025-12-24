@@ -12,4 +12,6 @@ public interface ApprovalActionRepository extends JpaRepository<ApprovalAction, 
     
     @Query("SELECT a FROM ApprovalAction a WHERE a.levelNumber = :level AND a.action = :action")
     List<ApprovalAction> findByLevelAndAction(@Param("level") Integer level, @Param("action") String action);
+    
+    List<ApprovalAction> findByRequestId(Long requestId);
 }
