@@ -8,4 +8,4 @@ import java.util.List;
 @Repository
 public interface WorkflowStepConfigRepository extends JpaRepository<WorkflowStepConfig, Long> {
     List<WorkflowStepConfig> findByTemplateIdOrderByLevelNumberAsc(Long templateId);
-}
+} 
