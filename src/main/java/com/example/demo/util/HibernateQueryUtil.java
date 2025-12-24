@@ -7,7 +7,6 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 import org.springframework.stereotype.Component;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
@@ -18,7 +17,7 @@ public class HibernateQueryUtil {
     
     public List<ApprovalAction> findActionsByApproverUsingCriteria(Long approverId) {
         if (approverId == null) {
-            return new ArrayList<>();
+            return List.of();
         }
         
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
