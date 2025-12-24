@@ -23,12 +23,16 @@ public class ApprovalAction {
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
+    
     public Long getRequestId() { return requestId; }
     public void setRequestId(Long requestId) { this.requestId = requestId; }
+    
     public Long getApproverId() { return approverId; }
     public void setApproverId(Long approverId) { this.approverId = approverId; }
+    
     public Integer getLevelNumber() { return levelNumber; }
     public void setLevelNumber(Integer levelNumber) { this.levelNumber = levelNumber; }
+    
     public String getAction() { return action; }
     public void setAction(String action) { this.action = action; }
 }
