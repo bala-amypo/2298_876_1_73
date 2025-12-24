@@ -1,13 +1,11 @@
-package com.example.demo.service;
+package com.example.demo.repository;
 
-import com.example.demo.model.WorkflowStepConfig;
-import com.example.demo.repository.WorkflowStepConfigRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
+import com.example.demo.model.ApprovalRequest;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import java.util.List;
 
-@Service
-public class WorkflowStepConfigService {
-    
-    @Autowired
-    private WorkflowStepConfigRepository stepRepository;
+@Repository
+public interface ApprovalRequestRepository extends JpaRepository<ApprovalRequest, Long> {
+    List<ApprovalRequest> findByRequesterId(Long requesterId);
 }
