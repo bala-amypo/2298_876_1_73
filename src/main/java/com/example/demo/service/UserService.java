@@ -29,7 +29,7 @@ public class UserService {
                     newRole.setName(roleName);
                     return roleRepository.save(newRole);
                 });
-        
+            
         user.getRoles().clear();
         user.getRoles().add(role);
         return userRepository.save(user);
