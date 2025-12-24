@@ -1,30 +1,43 @@
 package com.example.demo.controller;
 
-import com.example.demo.model.ApprovalRequest;
-import com.example.demo.model.ApprovalAction;
-import com.example.demo.service.ApprovalRequestService;
-import com.example.demo.service.ApprovalActionService;
+import com.example.demo.dto.AuthRequest;
+import com.example.demo.dto.RegisterRequest;
+import com.example.demo.security.JwtTokenProvider;
+import com.example.demo.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
-@RequestMapping("/api/approvals")
-public class ApprovalController {
+@RequestMapping("/api/auth")
+public class AuthController {
 
     @Autowired
-    private ApprovalRequestService requestService;
+    private AuthenticationManager authenticationManager;
 
     @Autowired
-    private ApprovalActionService actionService;
+    private JwtTokenProvider jwtTokenProvider;
 
-    @PostMapping("/requests")
-    public ResponseEntity<ApprovalRequest> createRequest(@RequestBody ApprovalRequest request) {
-        return ResponseEntity.ok(requestService.save(request));
+    @Autowired
+    private UserService userService;
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody AuthRequest request) {
+        authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(request.getUsernameOrEmail(), request.getPassword())
+        );
+        com.example.demo.model.User user = userService.findByUsername(request.getUsernameOrEmail());
+        String token = jwtTokenProvider.generateToken(user);
+        return ResponseEntity.ok(Map.of("token", token));
     }
 
-    @PostMapping("/actions")
-    public ResponseEntity<ApprovalAction> createAction(@RequestBody ApprovalAction action) {
-        return ResponseEntity.ok(actionService.save(action));
+    @PostMapping("/register")
+    public ResponseEntity<?> register(@RequestBody RegisterRequest request) {
+        userService.registerUser(request.getUsername(), request.getPassword(), request.getEmail());
+        return ResponseEntity.ok(Map.of("message", "User registered successfully"));
     }
 }
