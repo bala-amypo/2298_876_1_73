@@ -1,11 +1,26 @@
-package com.example.demo.repository;
+package com.example.demo.service;
 
 import com.example.demo.model.ApprovalRequest;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
+import com.example.demo.repository.ApprovalRequestRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import java.util.List;
 
-@Repository
-public interface ApprovalRequestRepository extends JpaRepository<ApprovalRequest, Long> {
-    List<ApprovalRequest> findByRequesterId(Long requesterId);
+@Service
+public class ApprovalRequestService {
+    
+    @Autowired
+    private ApprovalRequestRepository requestRepository;
+    
+    public ApprovalRequest createRequest(ApprovalRequest request) {
+        return requestRepository.save(request);
+    }
+    
+    public List<ApprovalRequest> getRequestsByRequester(Long requesterId) {
+        return requestRepository.findByRequesterId(requesterId);
+    }
+    
+    public List<ApprovalRequest> getAllRequests() {
+        return requestRepository.findAll();
+    }
 }
