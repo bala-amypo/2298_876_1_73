@@ -22,20 +22,18 @@ public class UserService {
     
     public User registerUser(User user, String roleName) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        
         Role role = roleRepository.findByName(roleName)
                 .orElseGet(() -> {
-                    Role newRole = new Role();
-                    newRole.setName(roleName);
-                    return roleRepository.save(newRole);
+                    Role r = new Role();
+                    r.setName(roleName);
+                    return roleRepository.save(r);
                 });
-            
         user.getRoles().clear();
         user.getRoles().add(role);
         return userRepository.save(user);
     }
     
     public User findByUsername(String username) {
-        return userRepository.findByUsername(username).orElse(null);
+        return userRepository.findByUsername(username).orElseThrow();
     }
 }

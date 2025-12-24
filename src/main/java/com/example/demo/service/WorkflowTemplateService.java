@@ -26,7 +26,7 @@ public class WorkflowTemplateService {
         return templateRepository.save(template);
     }
     
-    public WorkflowTemplate activateTemplate(Long id, boolean active) {
+    public WorkflowTemplate activateTemplate(Long id, Boolean active) {
         WorkflowTemplate template = templateRepository.findById(id).orElseThrow();
         template.setActive(active);
         return templateRepository.save(template);

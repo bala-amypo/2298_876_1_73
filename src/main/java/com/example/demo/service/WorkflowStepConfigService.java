@@ -1,11 +1,12 @@
-package com.example.demo.repository;
+package com.example.demo.service;
 
-import com.example.demo.model.WorkflowStepConfig;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.stereotype.Repository;
-import java.util.List;
+import com.example.demo.repository.WorkflowStepConfigRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
-@Repository
-public interface WorkflowStepConfigRepository extends JpaRepository<WorkflowStepConfig, Long> {
-    List<WorkflowStepConfig> findByTemplateIdOrderByLevelNumberAsc(Long templateId);
+@Service
+public class WorkflowStepConfigService {
+    
+    @Autowired
+    private WorkflowStepConfigRepository stepRepository;
 }
