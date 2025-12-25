@@ -1,6 +1,6 @@
 package com.example.demo.dto;
 
-public class WorkflowTemplateDto {
+public class WorkflowTemplateRequest {
     private String templateName;
     private String description;
     private Integer totalLevels;
