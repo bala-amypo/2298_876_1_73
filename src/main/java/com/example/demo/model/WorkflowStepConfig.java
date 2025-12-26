@@ -3,41 +3,36 @@ package com.example.demo.model;
 import jakarta.persistence.*;
 
 @Entity
-@Table(name = "workflow_step_config")
+@Table(name = "workflow_step_configs")
 public class WorkflowStepConfig {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Proper relationship (required for normalization test)
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "template_id", nullable = false)
-    private WorkflowTemplate template;
+    @Column(nullable = false)
+    private Long templateId;
 
-    @Column(name = "level_number")
     private Integer levelNumber;
 
-    @Column(name = "approver_role")
     private String approverRole;
 
-    @Column(name = "instructions")
+    private Boolean isFinalStep;
+
     private String instructions;
+
+    public WorkflowStepConfig() {}
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getTemplateId() {
+        return templateId;
     }
 
-    public WorkflowTemplate getTemplate() {
-        return template;
-    }
-
-    public void setTemplate(WorkflowTemplate template) {
-        this.template = template;
+    public void setTemplateId(Long templateId) {
+        this.templateId = templateId;
     }
 
     public Integer getLevelNumber() {
@@ -56,26 +51,19 @@ public class WorkflowStepConfig {
         this.approverRole = approverRole;
     }
 
+    public Boolean getIsFinalStep() {
+        return isFinalStep;
+    }
+
+    public void setIsFinalStep(Boolean isFinalStep) {
+        this.isFinalStep = isFinalStep;
+    }
+
     public String getInstructions() {
         return instructions;
     }
 
     public void setInstructions(String instructions) {
         this.instructions = instructions;
-    }
-
-    // -------------------------------------------------
-    // Compatibility methods (REQUIRED for portal tests)
-    // -------------------------------------------------
-    public void setTemplateId(Long templateId) {
-        if (templateId != null) {
-            WorkflowTemplate t = new WorkflowTemplate();
-            t.setId(templateId);
-            this.template = t;
-        }
-    }
-
-    public Long getTemplateId() {
-        return this.template != null ? this.template.getId() : null;
     }
 }

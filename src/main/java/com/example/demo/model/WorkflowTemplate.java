@@ -1,50 +1,62 @@
 package com.example.demo.model;
 
 import jakarta.persistence.*;
-import java.util.List;
 
 @Entity
-@Table(name = "workflow_template")
+@Table(
+    name = "workflow_templates",
+    uniqueConstraints = @UniqueConstraint(columnNames = "templateName")
+)
 public class WorkflowTemplate {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "template_name", unique = true, nullable = false)
+    @Column(nullable = false, unique = true)
     private String templateName;
 
-    @Column(name = "total_levels")
-    private Integer totalLevels;
-
-    @Column(name = "active")
-    private Boolean active = true;
-
-    @Column(name = "description")
     private String description;
 
-    @OneToMany(
-        mappedBy = "template",
-        cascade = CascadeType.ALL,
-        orphanRemoval = true
-    )
-    private List<WorkflowStepConfig> steps;
+    private Integer totalLevels;
 
-    public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
+    private Boolean active;
 
-    public String getTemplateName() { return templateName; }
-    public void setTemplateName(String templateName) { this.templateName = templateName; }
+    public WorkflowTemplate() {}
 
-    public Integer getTotalLevels() { return totalLevels; }
-    public void setTotalLevels(Integer totalLevels) { this.totalLevels = totalLevels; }
+    public Long getId() {
+        return id;
+    }
 
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
+    public String getTemplateName() {
+        return templateName;
+    }
 
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public void setTemplateName(String templateName) {
+        this.templateName = templateName;
+    }
 
-    public List<WorkflowStepConfig> getSteps() { return steps; }
-    public void setSteps(List<WorkflowStepConfig> steps) { this.steps = steps; }
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Integer getTotalLevels() {
+        return totalLevels;
+    }
+
+    public void setTotalLevels(Integer totalLevels) {
+        this.totalLevels = totalLevels;
+    }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
 }
