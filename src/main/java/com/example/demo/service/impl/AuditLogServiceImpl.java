@@ -2,22 +2,33 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.AuditLogRecord;
 import com.example.demo.repository.AuditLogRecordRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.AuditLogService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
-@Service("auditLogServiceImpl")
-public class AuditLogServiceImpl {
-    
-    @Autowired
-    private AuditLogRecordRepository auditRepository;
-    
-    public AuditLogRecord createAuditLog(AuditLogRecord auditLog) {
-        return auditRepository.save(auditLog);
+@Service
+public class AuditLogServiceImpl implements AuditLogService {
+
+    private final AuditLogRecordRepository auditLogRecordRepository;
+
+    public AuditLogServiceImpl(AuditLogRecordRepository auditLogRecordRepository) {
+        this.auditLogRecordRepository = auditLogRecordRepository;
     }
-    
-    public List<AuditLogRecord> getAuditLogsByRequestId(Long requestId) {
-        return auditRepository.findByRequestId(requestId);
+
+    @Override
+    public AuditLogRecord logEvent(Long requestId, String eventType, String details) {
+        AuditLogRecord record = new AuditLogRecord();
+        record.setRequestId(requestId);
+        record.setEventType(eventType);
+        record.setDetails(details);
+        record.setLoggedAt(LocalDateTime.now()); 
+        return auditLogRecordRepository.save(record);
+    }
+
+    @Override
+    public List<AuditLogRecord> getLogsByRequestId(Long requestId) {
+        return auditLogRecordRepository.findByRequestId(requestId);
     }
 }

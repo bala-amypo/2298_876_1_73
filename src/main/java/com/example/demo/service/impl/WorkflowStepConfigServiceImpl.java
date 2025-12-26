@@ -2,22 +2,28 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.WorkflowStepConfig;
 import com.example.demo.repository.WorkflowStepConfigRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.demo.service.WorkflowStepConfigService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service("workflowStepConfigServiceImpl")
-public class WorkflowStepConfigServiceImpl {
-    
-    @Autowired
-    private WorkflowStepConfigRepository stepRepository;
-    
-    public WorkflowStepConfig createStep(WorkflowStepConfig step) {
-        return stepRepository.save(step);
+@Service
+public class WorkflowStepConfigServiceImpl implements WorkflowStepConfigService {
+
+    private final WorkflowStepConfigRepository workflowStepConfigRepository;
+
+    public WorkflowStepConfigServiceImpl(WorkflowStepConfigRepository workflowStepConfigRepository) {
+        this.workflowStepConfigRepository = workflowStepConfigRepository;
     }
-    
-    public List<WorkflowStepConfig> getStepsByTemplateId(Long templateId) {
-        return stepRepository.findByTemplateIdOrderByLevelNumberAsc(templateId);
+
+    @Override
+    public WorkflowStepConfig createStep(WorkflowStepConfig step) {
+        return workflowStepConfigRepository.save(step);
+    }
+
+    @Override
+    public List<WorkflowStepConfig> getStepsForTemplate(Long templateId) {
+        return workflowStepConfigRepository
+                .findByTemplateIdOrderByLevelNumberAsc(templateId);
     }
 }
